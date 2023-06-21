@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using ChatGPTWrapper;
+using System.IO;
 
 namespace Reqs {
 
@@ -70,7 +71,7 @@ namespace Reqs {
 
             yield return webRequest.SendWebRequest();
 
-            #if UNITY_2020_3_OR_NEWER
+#if UNITY_2020_3_OR_NEWER
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
@@ -90,12 +91,13 @@ namespace Reqs {
                     }
                     break;
                 case UnityWebRequest.Result.Success:
+                Log(webRequest.downloadHandler.text);
                     var responseJson = JsonUtility.FromJson<T>(webRequest.downloadHandler.text);
                     callback(responseJson);
                     break;
             }
-            #else
-            if(!string.IsNullOrWhiteSpace(webRequest.error))
+#else
+            if (!string.IsNullOrWhiteSpace(webRequest.error))
             {
                 Debug.LogError($"Error {webRequest.responseCode} - {webRequest.error}");
                 yield break;
@@ -108,6 +110,13 @@ namespace Reqs {
             #endif
 
             webRequest.Dispose();
+        }
+        private void Log(string message)
+        {
+            using (StreamWriter writer = new StreamWriter("chatgptlogfile.txt", true)) // true to append data to the file
+            {
+                writer.WriteLine(message);
+            }
         }
     }
 }

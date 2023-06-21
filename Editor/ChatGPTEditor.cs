@@ -43,7 +43,6 @@ namespace ChatGPTWrapper {
 			EditorGUILayout.PropertyField(_model);
 			EditorGUILayout.PropertyField(_maxTokens);
 			EditorGUILayout.PropertyField(_temperature);
-			
 
 			EditorGUILayout.Space(5);
 

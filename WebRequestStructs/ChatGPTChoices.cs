@@ -4,6 +4,7 @@ namespace ChatGPTWrapper {
     [Serializable]
     public struct ChatGPTChoices
     {
-        public Message message;
+        public MessageRes message;
+        public string finish_reason; 
     }
 }
